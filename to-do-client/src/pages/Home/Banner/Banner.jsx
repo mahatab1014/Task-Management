@@ -3,7 +3,7 @@ import PatternDark from "../../../assets/images/pattern-dark.20747baf.svg";
 const Banner = () => {
   return (
     <section
-      className="md:-mt-20"
+      className="md:-mt-20 border-b"
       style={{
         background: `url(${PatternDark})`,
       }}
