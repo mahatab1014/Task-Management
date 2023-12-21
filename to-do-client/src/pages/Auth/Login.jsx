@@ -1,18 +1,28 @@
 import { Link } from "react-router-dom";
-import { FaGoogle, FaFacebook, FaXTwitter } from "react-icons/fa6";
-import BGPattern from '../../assets/images/pattern-dark.20747baf.svg';
+import BGPattern from "../../assets/images/pattern-dark.20747baf.svg";
 import Lottie from "lottie-react";
-
-import LoginLottie from './login-lottie.json';
+import LoginLottie from "./login-lottie.json";
 import ContinueWithSM from "./ContinueWithSM";
+import useAuth from "../../hooks/useAuth";
+import Swal from "sweetalert2";
+
 const Login = () => {
+  const { signInWithEmail } = useAuth();
   const handleLogin = (e) => {
     e.preventDefault();
     const form = e.target;
     const email = form.email.value;
     const password = form.password.value;
 
-    console.log(email, password);
+    signInWithEmail(email, password).then(() => {
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Sign In successfully done",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    });
   };
 
   return (
@@ -28,7 +38,7 @@ const Login = () => {
             animationData={LoginLottie}
             loop={true}
           />
-          <div className="w-2/5 mx-auto overflow-hidden bg-white rounded-lg shadow-md dark:bg-gray-800">
+          <div className="w-full md:w-2/5 mx-auto overflow-hidden bg-white rounded-lg shadow-md dark:bg-gray-800">
             <div className="px-6 py-4">
               <div className="text-center">
                 <span className="font-bold text-2xl">Task M.</span>
