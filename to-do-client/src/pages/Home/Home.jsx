@@ -1,7 +1,6 @@
 import AboutUs from "./AboutUs/AboutUs";
 import Banner from "./Banner/Banner";
 import Features from "./Features/Features";
-import Testimonial from "./Testimonial/Testimonial";
 
 const Home = () => {
   return (
@@ -9,7 +8,6 @@ const Home = () => {
       <Banner />
       <AboutUs />
       <Features />
-      <Testimonial />
     </>
   );
 };
