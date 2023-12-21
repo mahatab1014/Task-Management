@@ -4,7 +4,7 @@ import PrimaryHeader from "../components/shared/PrimaryHeader/PrimaryHeader";
 const RootLayout = () => {
   return (
     <>
-      <header className="md:sticky md:top-3 z-50">
+      <header className="sticky md:top-3 z-50">
         <PrimaryHeader />
       </header>
 

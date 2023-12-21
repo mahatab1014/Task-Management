@@ -1,27 +1,31 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import toast from "react-hot-toast";
+import useAxiosPublic from "../../../hooks/useAxiosPublic";
 
-const ListTasks = ({ tasks, setTasks }) => {
+const ListTasks = ({ tasks, setTasks, todoDataRefetch }) => {
   const [todos, setTodos] = useState([]);
   const [inProgress, setInProgress] = useState([]);
   const [closed, setClosed] = useState([]);
 
   useEffect(() => {
-    const fTodos = tasks.filter((task) => task.status === "todo");
-    const fInProgress = tasks.filter((task) => task.status === "inprogress");
-    const fClosed = tasks.filter((task) => task.status === "closed");
+    // Ensure tasks is an array before filtering
+    if (Array.isArray(tasks)) {
+      const fTodos = tasks.filter((task) => task.status === "todo");
+      const fInProgress = tasks.filter((task) => task.status === "inprogress");
+      const fClosed = tasks.filter((task) => task.status === "closed");
 
-    setTodos(fTodos);
-    setInProgress(fInProgress);
-    setClosed(fClosed);
+      setTodos(fTodos);
+      setInProgress(fInProgress);
+      setClosed(fClosed);
+    }
   }, [tasks]);
 
   const statuses = ["todo", "inprogress", "closed"];
 
   return (
-    <div className="flex gap-16">
+    <div className="flex flex-col md:flex-row gap-6">
       {statuses.map((status, index) => (
         <Section
           key={index}
@@ -31,6 +35,7 @@ const ListTasks = ({ tasks, setTasks }) => {
           todos={todos}
           inProgress={inProgress}
           closed={closed}
+          todoDataRefetch={todoDataRefetch}
         />
       ))}
     </div>
@@ -39,7 +44,15 @@ const ListTasks = ({ tasks, setTasks }) => {
 
 export default ListTasks;
 
-const Section = ({ status, tasks, setTasks, todos, inProgress, closed }) => {
+const Section = ({
+  status,
+  tasks,
+  setTasks,
+  todos,
+  inProgress,
+  closed,
+  todoDataRefetch,
+}) => {
   const [{ isOver }, drop] = useDrop(() => ({
     accept: "task",
     drop: (item) => addItemToSection(item.id),
@@ -63,21 +76,22 @@ const Section = ({ status, tasks, setTasks, todos, inProgress, closed }) => {
     tasksToMap = closed;
   }
 
+  const axiosPublic = useAxiosPublic();
+
   const addItemToSection = (id) => {
-    setTasks((prev) => {
-      console.log("this is pre", prev);
-
-      const mTasks = prev.map((t) => {
-        if (t.id === id) {
-          return { ...t, status: status };
-        }
-        return t;
+    axiosPublic
+      .patch(`/todo/${id}`, { status })
+      .then((response) => {
+        // Handle success if needed
+        // console.log(response.data);
+      })
+      .catch((error) => {
+        // Handle error if needed
+        // console.error(error);
+      })
+      .finally(() => {
+        todoDataRefetch();
       });
-
-      localStorage.setItem("tasks", JSON.stringify(mTasks));
-
-      return mTasks;
-    });
   };
 
   return (
@@ -85,7 +99,13 @@ const Section = ({ status, tasks, setTasks, todos, inProgress, closed }) => {
       <Header text={text} bg={bg} count={tasksToMap.length} />
       <div className="space-y-1">
         {tasksToMap?.map((task) => (
-          <Task key={task.id} task={task} tasks={tasks} setTasks={setTasks} />
+          <Task
+            key={task.id}
+            task={task}
+            tasks={tasks}
+            setTasks={setTasks}
+            todoDataRefetch={todoDataRefetch}
+          />
         ))}
       </div>
     </div>
@@ -105,24 +125,25 @@ const Header = ({ text, bg, count }) => {
   );
 };
 
-const Task = ({ task, tasks, setTasks }) => {
+const Task = ({ task, todoDataRefetch }) => {
   const [{ isDragging }, drag] = useDrag(() => ({
     type: "task",
-    item: { id: task.id },
+    item: { id: task._id },
     collect: (monitor) => ({
       isDragging: !!monitor.isDragging(),
     }),
   }));
 
-  console.log(isDragging);
+  const axiosPublic = useAxiosPublic();
 
   const handleRemoveTask = (id) => {
-    console.log(id);
-    const fTasks = tasks.filter((t) => t.id !== id);
-
-    localStorage.setItem("tasks", JSON.stringify(fTasks));
-    setTasks(fTasks);
-    toast("Task removed", { icon: "😥" });
+    axiosPublic.delete(`/todo/${id}`).then((res) => {
+      console.log(res.data?.deletedCount);
+      if (res.data?.deletedCount === 1) {
+        toast("Task removed", { icon: "😥" });
+        todoDataRefetch();
+      }
+    });
   };
 
   return (
@@ -131,12 +152,17 @@ const Task = ({ task, tasks, setTasks }) => {
         <div className="collapse-title text-sm font-medium">{task?.name} </div>
         <div className="collapse-content">
           <p className="text-sm">
-            tabIndex attribute is necessary to make the div focusable
+            {task?.description.split("\n").map((line, index) => (
+              <React.Fragment key={index}>
+                {line}
+                <br />
+              </React.Fragment>
+            ))}
           </p>
         </div>
         <button
           type="submit"
-          onClick={() => handleRemoveTask(task.id)}
+          onClick={() => handleRemoveTask(task._id)}
           className="absolute right-2 bottom-2 btn btn-outline btn-xs btn-circle"
         >
           <svg
