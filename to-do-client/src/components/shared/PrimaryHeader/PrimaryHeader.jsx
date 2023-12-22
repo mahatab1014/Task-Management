@@ -43,6 +43,20 @@ const PrimaryHeader = () => {
                     Services
                   </NavLink>
                 </li>
+                <li>
+                  <NavLink
+                    className={({ isActive, isPending }) =>
+                      isPending
+                        ? "pending"
+                        : isActive
+                        ? "!btn !btn-sm !btn-neutral"
+                        : "!btn !btn-sm !btn-outline"
+                    }
+                    to="/blog"
+                  >
+                    Latest Blog
+                  </NavLink>
+                </li>
                 {user ? (
                   <li>
                     <NavLink
@@ -127,12 +141,34 @@ const PrimaryHeader = () => {
             <li>
               <NavLink to="/services">Services</NavLink>
             </li>
+
             <li>
-              <NavLink to="/dashboard">Dashboard</NavLink>
+              <NavLink to="/blog">Latest Blog</NavLink>
             </li>
-            <li>
-              <NavLink to="/login">Login</NavLink>
-            </li>
+            {user ? (
+              <li>
+                <NavLink to="/dashboard">Dashboard</NavLink>
+              </li>
+            ) : (
+              ""
+            )}
+
+            {user ? (
+              <li>
+                <span
+                  onClick={logOutUser}
+                  className="!btn !btn-sm !btn-outline"
+                >
+                  Logout
+                </span>
+              </li>
+            ) : (
+              <>
+                <li>
+                  <NavLink to="/login">Login</NavLink>
+                </li>
+              </>
+            )}
           </ul>
         </div>
       </nav>
