@@ -5,6 +5,9 @@ import Login from "../pages/Auth/Login";
 import Register from "../pages/Auth/Register";
 import DashboardLayout from "../layouts/DashboardLayout";
 import DashboardHome from "../pages/Dashboard/DashHome/DashboardHome";
+import Services from "../pages/Services/Services";
+import PrivateRoutes from "./PrivateRoutes";
+import { HideAuthRoutes } from "./HideRoutes";
 
 const PublicRoutes = createBrowserRouter([
   {
@@ -16,16 +19,32 @@ const PublicRoutes = createBrowserRouter([
         element: <Home />,
       },
       {
+        path: "services",
+        element: <Services />,
+      },
+      {
         path: "login",
-        element: <Login />,
+        element: (
+          <HideAuthRoutes>
+            <Login />
+          </HideAuthRoutes>
+        ),
       },
       {
         path: "register",
-        element: <Register />,
+        element: (
+          <HideAuthRoutes>
+            <Register />
+          </HideAuthRoutes>
+        ),
       },
       {
         path: "dashboard",
-        element: <DashboardLayout />,
+        element: (
+          <PrivateRoutes>
+            <DashboardLayout />
+          </PrivateRoutes>
+        ),
         children: [
           {
             index: true,

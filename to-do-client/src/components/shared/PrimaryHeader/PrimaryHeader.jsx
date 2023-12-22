@@ -1,6 +1,9 @@
 import { NavLink } from "react-router-dom";
+import useAuth from "../../../hooks/useAuth";
 
 const PrimaryHeader = () => {
+  const { user, logOutUser } = useAuth();
+
   return (
     <div className="md:w-[90%] backdrop-blur shadow-xl md:mx-auto md:rounded-lg z-50">
       <nav className="drawer">
@@ -40,34 +43,52 @@ const PrimaryHeader = () => {
                     Services
                   </NavLink>
                 </li>
-                <li>
-                  <NavLink
-                    className={({ isActive, isPending }) =>
-                      isPending
-                        ? "pending"
-                        : isActive
-                        ? "!btn !btn-sm !btn-neutral"
-                        : "!btn !btn-sm !btn-outline"
-                    }
-                    to="/dashboard"
-                  >
-                    Dashboard
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink
-                    className={({ isActive, isPending }) =>
-                      isPending
-                        ? "pending"
-                        : isActive
-                        ? "!btn !btn-sm !btn-neutral"
-                        : "!btn !btn-sm !btn-outline"
-                    }
-                    to="/login"
-                  >
-                    Login
-                  </NavLink>
-                </li>
+                {user ? (
+                  <li>
+                    <NavLink
+                      className={({ isActive, isPending }) =>
+                        isPending
+                          ? "pending"
+                          : isActive
+                          ? "!btn !btn-sm !btn-neutral"
+                          : "!btn !btn-sm !btn-outline"
+                      }
+                      to="/dashboard"
+                    >
+                      Dashboard
+                    </NavLink>
+                  </li>
+                ) : (
+                  ""
+                )}
+
+                {user ? (
+                  <li>
+                    <span
+                      onClick={logOutUser}
+                      className="!btn !btn-sm !btn-outline"
+                    >
+                      Logout
+                    </span>
+                  </li>
+                ) : (
+                  <>
+                    <li>
+                      <NavLink
+                        className={({ isActive, isPending }) =>
+                          isPending
+                            ? "pending"
+                            : isActive
+                            ? "!btn !btn-sm !btn-neutral"
+                            : "!btn !btn-sm !btn-outline"
+                        }
+                        to="/login"
+                      >
+                        Login
+                      </NavLink>
+                    </li>
+                  </>
+                )}
               </ul>
             </div>
             <div className="flex-none lg:hidden">

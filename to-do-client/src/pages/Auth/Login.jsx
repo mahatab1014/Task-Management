@@ -1,28 +1,42 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import BGPattern from "../../assets/images/pattern-dark.20747baf.svg";
 import Lottie from "lottie-react";
 import LoginLottie from "./login-lottie.json";
 import ContinueWithSM from "./ContinueWithSM";
 import useAuth from "../../hooks/useAuth";
 import Swal from "sweetalert2";
+import { useState } from "react";
 
 const Login = () => {
   const { signInWithEmail } = useAuth();
+ const [errorMessage, setErrorMessage] = useState(null);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const from = location.state?.from?.pathname || "/";
+
   const handleLogin = (e) => {
     e.preventDefault();
     const form = e.target;
     const email = form.email.value;
     const password = form.password.value;
 
-    signInWithEmail(email, password).then(() => {
-      Swal.fire({
-        position: "center",
-        icon: "success",
-        title: "Sign In successfully done",
-        showConfirmButton: false,
-        timer: 1500,
+    setErrorMessage("");
+
+    signInWithEmail(email, password)
+      .then(() => {
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Sign In successfully done",
+          showConfirmButton: false,
+          timer: 1500,
+        }).then(() => {
+          navigate(from, { replace: true });
+        });
+      })
+      .catch((error) => {
+        setErrorMessage("Email or Password is incorrect!");
       });
-    });
   };
 
   return (
@@ -47,6 +61,12 @@ const Login = () => {
               <h3 className="text-xl font-medium text-center text-gray-600 dark:text-gray-200">
                 Welcome Back
               </h3>
+
+              {errorMessage && (
+                <div className="mt-8 bg-error p-2 text-black">
+                  <span>{errorMessage}</span>
+                </div>
+              )}
 
               <div className="divider text-sm">Login With Email</div>
 

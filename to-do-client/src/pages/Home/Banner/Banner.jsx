@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import PatternDark from "../../../assets/images/pattern-dark.20747baf.svg";
 
 const Banner = () => {
@@ -8,6 +9,9 @@ const Banner = () => {
         background: `url(${PatternDark})`,
       }}
     >
+      <div className="animate-bounce bg-blue-300 w-96 h-56 absolute top-0 left-0 blur-3xl"></div>
+      <div className="animate-bounce bg-blue-300 w-96 h-56 absolute bottom-0 right-0 blur-3xl"></div>
+
       <div className="hero min-h-screen">
         {/* <div className="hero-overlay bg-opacity-60"></div> */}
         <div className="hero-content text-center ">
@@ -22,7 +26,11 @@ const Banner = () => {
               gain valuable insights into your work patterns. Empower your
               productivity journey today!
             </p>
-            <button className="custom-button active:scale-95">Let&apos;s Explore</button>
+            <Link to="/dashboard">
+              <button className="custom-button active:scale-95">
+                Let&apos;s Explore
+              </button>
+            </Link>
           </div>
         </div>
       </div>

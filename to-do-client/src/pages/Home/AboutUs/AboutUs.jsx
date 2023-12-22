@@ -1,7 +1,7 @@
 const AboutUs = () => {
     return (
       <>
-        <section className="bg-white dark:bg-gray-900 border-b">
+        <section className="bg-base-200 dark:bg-gray-900 border-b">
           <div className="container px-5 py-10 mx-auto">
             <div className="lg:flex lg:items-center">
               <div className="w-full space-y-12 lg:w-1/2 ">

@@ -7,7 +7,7 @@ import { IoMdNotificationsOutline } from "react-icons/io";
 const Features = () => {
   return (
     <>
-      <section className="bg-white dark:bg-gray-900">
+      <section className="dark:bg-gray-900">
         <div className="container px-5 py-10 mx-auto">
           <div className="py-10">
             <h2 className="text-2xl text-center font-semibold text-gray-800 capitalize lg:text-3xl dark:text-white">

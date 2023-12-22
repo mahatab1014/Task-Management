@@ -11,11 +11,12 @@ import {
 } from "firebase/auth";
 import app from "../firebase/firebase.config";
 import useAxiosPublic from "../hooks/useAxiosPublic";
-// import Swal from "Swal"
+import Swal from "sweetalert2";
+import { Navigate } from "react-router-dom";
 
 const auth = getAuth(app);
 export const AuthContext = createContext(null);
-const AuthProvider = ({children}) => {
+const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [authLoading, setAuthLoading] = useState(true);
   const axiosPublic = useAxiosPublic();
@@ -70,13 +71,15 @@ const AuthProvider = ({children}) => {
 
   const logOutUser = async () => {
     await signOut(auth);
-    //   Swal.fire({
-    //       position: "center",
-    //       icon: "success",
-    //       title: "Logout successfully done",
-    //       showConfirmButton: false,
-    //       timer: 2500,
-    //   });
+    Swal.fire({
+      position: "center",
+      icon: "success",
+      title: "Logout successfully done",
+      showConfirmButton: false,
+      timer: 2500,
+    }).then(() => {
+      <Navigate to="/" replace/>;
+    });
   };
 
   const authInfo = {
