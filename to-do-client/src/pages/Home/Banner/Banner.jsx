@@ -36,33 +36,33 @@ const Banner = () => {
       <div
         data-aos="fade-down"
         data-speed="-25"
-        className="banner-parallax w-10 h-10 border-4 border-purple-500 rounded-full absolute top-56 left-56 transition-transform"
+        className="hidden md:block banner-parallax w-10 h-10 border-4 border-purple-500 rounded-full absolute top-56 left-56 transition-transform"
       ></div>
       <div
         data-aos="fade-down"
         data-speed="27"
-        className="banner-parallax w-10 h-10 bg-purple-700 rounded-full absolute top-56 left-56 transition-transform blur-lg"
+        className="hidden md:block banner-parallax w-10 h-10 bg-purple-700 rounded-full absolute top-56 left-56 transition-transform blur-lg"
       ></div>
 
       <div
         data-aos="fade-down"
         data-speed="-25"
-        className="banner-parallax w-10 h-10 bg-purple-700 rounded-full absolute top-56 right-56 transition-transform blur-lg"
+        className="hidden md:block banner-parallax w-10 h-10 bg-purple-700 rounded-full absolute top-56 right-56 transition-transform blur-lg"
       ></div>
       <div
         data-aos="fade-down"
         data-speed="25"
-        className="banner-parallax w-10 h-10 border-4 border-purple-500 rounded-full absolute top-56 right-56 transition-transform"
+        className="hidden md:block banner-parallax w-10 h-10 border-4 border-purple-500 rounded-full absolute top-56 right-56 transition-transform"
       ></div>
       <img
         data-aos="fade-down"
         data-speed="40"
         src="https://i.imgur.com/jGIQKBP.png"
-        className="banner-parallax w-1/6 rounded-full absolute bottom-32 right-40 transition-transform"
+        className="hidden md:block banner-parallax w-1/6 rounded-full absolute bottom-32 right-40 transition-transform"
         alt=""
       />
 
-      <div className="hero min-h-screen">
+      <div className="hero h-[80vh] sm:min-h-screen">
         {/* <div className="hero-overlay bg-opacity-60"></div> */}
         <div className="hero-content text-center ">
           <div className="max-w-2xl">

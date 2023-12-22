@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import useAuth from "../../../hooks/useAuth";
 
 const PrimaryHeader = () => {
@@ -11,7 +11,9 @@ const PrimaryHeader = () => {
         <div className="drawer-content flex flex-col">
           <div className="w-full navbar">
             <div className="flex-1 px-2 mx-2">
-              <span className="font-semibold text-xl">Task M.</span>
+              <Link to="/">
+                <span className="font-semibold text-xl">Task M.</span>
+              </Link>
             </div>
             <div className="flex-none hidden lg:block">
               <ul className="menu menu-horizontal gap-3">
