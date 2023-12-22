@@ -5,7 +5,11 @@ const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const port = process.env.PORT || 5000;
 require("dotenv").config();
 
-const allowedOrigins = ["http://localhost:5173"];
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://task-management-1014.web.app",
+  "https://task-management-1014.firebaseapp.com",
+];
 app.use(
   cors({
     origin: allowedOrigins,
