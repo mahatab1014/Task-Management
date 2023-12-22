@@ -112,6 +112,32 @@ async function run() {
       const result = await todo_collection.deleteOne(query);
       res.send(result);
     });
+    app.get(`${apiVersion}/single-todo/:id`, async (req, res) => {
+      const { id } = req.params;
+      const filter = { _id: new ObjectId(id) };
+      const result = await todo_collection.findOne(filter);
+      res.send(result);
+    });
+    app.patch(`${apiVersion}/update-todo/:id`, async (req, res) => {
+      const { id } = req.params;
+      const body = req.body;
+      const filter = { _id: new ObjectId(id) };
+      const options = { upsert: false };
+      const updateDoc = {
+        $set: {
+          name: body?.name,
+          description: body?.description,
+          priority: body?.priority,
+          deadline: body?.deadline,
+        },
+      };
+      const result = await todo_collection.updateOne(
+        filter,
+        updateDoc,
+        options
+      );
+      res.send(result);
+    });
 
     await client.connect();
     // Send a ping to confirm a successful connection
